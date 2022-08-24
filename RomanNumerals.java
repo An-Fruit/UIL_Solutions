@@ -32,6 +32,7 @@ public class RomanNumerals{
 
 		while(f.hasNext()){
 			int n = f.nextInt();
+			if(n == 0) break;
 			System.out.println(convert(n));
 		}
 
@@ -40,7 +41,7 @@ public class RomanNumerals{
 	}
 	public static void main(String[] args) throws Exception{
 
-	new RomanNumerals().run();
+		new RomanNumerals().run();
 
 	}
 }
