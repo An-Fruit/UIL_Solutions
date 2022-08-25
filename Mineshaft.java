@@ -9,7 +9,7 @@ public class Mineshaft {
 	public void go(int z, int x, int y, int steps) {
 		boolean used = false;
 		int time = 0;
-		if(z > 0 && z < mat.length && x > 0 && x < mat[z].length && y > 0 && y < mat[z][x].length && (mat[z][x][y] != '#' || mat[z][x][y] == '%' && durability == 0) && steps < shadow[z][x][y]) {
+		if(z >= 0 && z < mat.length && x >= 0 && x < mat[z].length && y >= 0 && y < mat[z][x].length && (mat[z][x][y] != '#' || mat[z][x][y] == '%' && durability == 0) && steps < shadow[z][x][y]) {
 			if(mat[z][x][y] == 'E') {
 				dead = false;
 				seconds = shadow[z][x][y];
@@ -68,6 +68,7 @@ public class Mineshaft {
 							startloc[0] = i;
 							startloc[1] = j;
 							startloc[2] = k;
+							mat[i][j][k] = '#';
 							break;
 						}
 					}
