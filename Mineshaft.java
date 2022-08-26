@@ -11,7 +11,7 @@ public class Mineshaft {
 		int time = 0;
 		if(z >= 0 && z < mat.length && x >= 0 && x < mat[z].length && y >= 0 && y < mat[z][x].length &&
 				(mat[z][x][y] != '#' || (mat[z][x][y] == '%' && durability == 0)) && steps < shadow[z][x][y]) {
-
+			shadow[z][x][y] = steps;
 			if(mat[z][x][y] == 'E') {
 				found = true;
 				seconds = shadow[z][x][y];
@@ -23,9 +23,12 @@ public class Mineshaft {
 				durability--;
 			}
 			mat[z][x][y] = '#';
-			shadow[x][y][z] = steps;
+
+			//down a floor
 			go(z + 1, x, y, steps + 2 + time);
+			//up a floor
 			go(z - 1, x, y, steps + 3 + time);
+			//four cardinal directions
 			go(z, x + 1, y, steps + 1 + time);
 			go(z, x - 1, y, steps + 1 + time);
 			go(z, x, y + 1, steps + 1 + time);
@@ -58,8 +61,8 @@ public class Mineshaft {
 			
 			for(int i = 0; i < shadow.length; i++) {
 				for(int j = 0; j < shadow[i].length; j++) {
-					for(int k = 0; k < shadow[i][j].length; k++) {
-						shadow[i][j][k] = Integer.MAX_VALUE;
+					for(int[] k : shadow[i]){
+						Arrays.fill(k, Integer.MAX_VALUE);
 					}
 				}
 			}
@@ -72,13 +75,12 @@ public class Mineshaft {
 							startloc[0] = i;
 							startloc[1] = j;
 							startloc[2] = k;
-							mat[i][j][k] = '#';
 							break;
 						}
 					}
 				}
 			}
-			go(startloc[2], startloc[0], startloc[1], 0);
+			go(startloc[0], startloc[1], startloc[2], 0);
 			if(found) System.out.println(seconds + " SECONDS");
 			else System.out.println("DEAD");
 			
