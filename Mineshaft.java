@@ -4,14 +4,16 @@ import java.io.*;
 public class Mineshaft {
 	char[][][] mat;
 	int[][][] shadow;
-	boolean dead, used;
+	boolean found, used;
 	int durability, seconds;
 	public void go(int z, int x, int y, int steps) {
 		boolean used = false;
 		int time = 0;
-		if(z >= 0 && z < mat.length && x >= 0 && x < mat[z].length && y >= 0 && y < mat[z][x].length && (mat[z][x][y] != '#' || mat[z][x][y] == '%' && durability == 0) && steps < shadow[z][x][y]) {
+		if(z >= 0 && z < mat.length && x >= 0 && x < mat[z].length && y >= 0 && y < mat[z][x].length &&
+				(mat[z][x][y] != '#' || (mat[z][x][y] == '%' && durability == 0)) && steps < shadow[z][x][y]) {
+
 			if(mat[z][x][y] == 'E') {
-				dead = false;
+				found = true;
 				seconds = shadow[z][x][y];
 				return;
 			}
@@ -34,16 +36,18 @@ public class Mineshaft {
 	}
 	
 	public void run() throws Exception{
-		Scanner f = new Scanner(System.in);
+		Scanner f = new Scanner(new File("mineshaft.dat"));
+		//Scanner f = new Scanner(System.in);
 		int t = f.nextInt();
 		while(t-- > 0) {
-			dead = true;
+			found = false;
 			int floor = f.nextInt();
 			int r = f.nextInt();
 			int c = f.nextInt();
 			durability = f.nextInt();
 			seconds = 0;
 			mat = new char[floor][r][c];
+			shadow = new int[floor][r][c];
 			for(int i = 0; i < mat.length; i++) {
 				for(int j = 0; j < mat[i].length; j++) {
 					mat[i][j] = f.next().toCharArray();
@@ -74,8 +78,8 @@ public class Mineshaft {
 					}
 				}
 			}
-			go(startloc[0], startloc[1], startloc[2], 0);
-			if(!dead) System.out.println(seconds + " SECONDS");
+			go(startloc[2], startloc[0], startloc[1], 0);
+			if(found) System.out.println(seconds + " SECONDS");
 			else System.out.println("DEAD");
 			
 		}
