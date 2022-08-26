@@ -25,18 +25,36 @@ public class Rats {
 	}
 	
 	public void run() throws Exception{
-		Scanner f = new Scanner(System.in);
+		Scanner f = new Scanner(new File("rats.dat"));
+		//Scanner f = new Scanner(System.in);
 		
 		int t = f.nextInt();
 		f.nextLine();
 		while(t-- > 0) {
+			found = false;
+			int startlocx = 0;
+			int startlocy = 0;
 			int size = f.nextInt();
 			mat = new char[size][size];
+			shadow = new int[size][size];
 			for(int i = 0; i < mat.length; i++) {
 				for(int j = 0; j < mat[i].length; j++) {
-					mat[i][j] = f.next().charAt(0);
+					char c = f.next().charAt(0);
+					mat[i][j] = c;
+					if(c == 'M'){
+						startlocx = i;
+						startlocy = j;
+					}
+
 				}
 			}
+			for(int[] i : shadow){
+				Arrays.fill(i, Integer.MAX_VALUE);
+			}
+			go(startlocx, startlocy, 0);
+			if(found) System.out.println("Cheese Found");
+			else System.out.println("Dead Rat");
+
 		}
 		
 		f.close();
